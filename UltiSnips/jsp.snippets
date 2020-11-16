@@ -1,0 +1,36 @@
+snippet jsp
+<%@page language="java" contentType="text/html;charser=UTF-8" pageEncoding="UTF-8"%>
+<html>
+	<body>
+		${1}	
+	</body>
+</html>
+endsnippet
+
+snippet <%
+<%${1}%>
+${0}
+endsnippet
+
+snippet if
+<% if(${1}){ %>
+	${2}
+<%} else {%>
+	${3}
+<%}%>
+${0}
+endsnippet
+
+snippet for "" 
+<%for (${1}){%>
+${2}
+<%}%>
+${0}
+endsnippet
+
+snippet while "" 
+<%while(${1}){%>
+${2}
+<%}%>
+${0}
+endsnippet

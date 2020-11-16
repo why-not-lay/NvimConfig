@@ -1,0 +1,18 @@
+{
+  "python.jediEnabled":false,
+  "coc.preferences.colorSupport": true,
+  "coc.preferences.extensionUpdateCheck":"weekly",
+  "suggest.noselect": true,
+  "suggest.enablePreselect": false,
+  "codeLens.enable": true,
+  "snippets.ultisnips.directories": [
+    "UltiSnips",
+    "$HOME/.config/nvim/UltiSnips/"
+  ],
+  "java.trace.server": "verbose",
+  "html.filetypes": [
+    "html",
+    "handlebars",
+    "htmldjango"
+  ]
+}

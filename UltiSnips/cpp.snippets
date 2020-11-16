@@ -1,0 +1,54 @@
+#for C++
+snippet std
+using namespace std;
+${0}
+endsnippet
+
+snippet class
+class ${1:classname}{
+	private:
+		${2}
+	protected:
+		${3}
+	public:
+		$1(${4});
+		~$1(${5});
+};
+${0}
+endsnippet
+
+snippet func
+${1:void} ${2:functionname}(${3:variablename}){
+	//function
+	${4}
+}
+${0}
+endsnippet
+
+snippet main
+int main(){
+	${1}
+	return 0;
+}
+endsnippet
+
+snippet typeC "comment of type"
+/*
+* type defination
+* ${1:type}
+**/${0}
+endsnippet
+
+snippet defC "comment of def"
+/*
+* function defination
+* ${1:def}
+**/${0}
+endsnippet
+
+snippet classC "comment of class"
+/*
+* class defination
+* ${1:class}
+*/${0}
+endsnippet

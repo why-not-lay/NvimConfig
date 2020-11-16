@@ -1,0 +1,36 @@
+#for markdown
+snippet code "code block"
+~~~${1:language}
+${2:code}
+~~~
+${0}
+endsnippet
+
+snippet * "//" i
+*${1:content}*${0}
+endsnippet
+
+snippet ** "o" i
+**${1:content}**${0}
+endsnippet
+
+snippet ~~ "d" i
+~~${1:content}~~${0}
+endsnippet
+
+
+snippet link "link"
+[${1:name}](${2:link})${0}
+endsnippet
+
+snippet pic "picture"
+![${1:name}](${2:link})${0}
+endsnippet
+
+
+
+snippet $ "" i
+$${1}$${0}
+endsnippet
+
+
