@@ -25,33 +25,33 @@ set wildmenu
 
 set list
 set backspace=indent,eol,start
-set scrolloff=10
+set scrolloff=25
 
-"set foldmethod=indent
+set foldmethod=indent
 
-noremap j hzz
-noremap k jzz
-noremap i kzz
+noremap j h
+noremap k j
+noremap i k
 noremap h i
 noremap H I
-noremap I 5kzz
-noremap K 5jzz
-noremap = nzz
-noremap - Nzz
+noremap I 5k
+noremap K 5j
+noremap = n
+noremap - N
 noremap 0 ^
 noremap ^ 0
-noremap G Gzz
-noremap <C-o> <C-o>zz
+noremap G G
+noremap <C-o> <C-o>
 
 map s <nop>
 map S :w<CR>
 map Q :q<CR>
 map R :source ~/.config/nvim/init.vim<CR>
 "分屏
-map zi :set nosplitbelow<CR>:split<CR>
-map zk :set splitbelow<CR>:split<CR>
-map zl :set splitright<CR>:vsplit<CR>
-map zj :set nosplitright<CR>:vsplit<CR>
+map <M-i> :set nosplitbelow<CR>:split<CR>
+map <M-k> :set splitbelow<CR>:split<CR>
+map <M-l> :set splitright<CR>:vsplit<CR>
+map <M-j> :set nosplitright<CR>:vsplit<CR>
 map sv <C-w>t<C-w>H
 map sh <C-w>t<C-w>K
 map <LEADER>i <C-w>k
@@ -68,7 +68,7 @@ map tl :+tabnext<CR>
 map tj :-tabnext<CR>
 
 "控制台
-map <M-t> zk:te<CR>
+map <M-t> <M-k>:te<CR>
 tnoremap <Esc> <C-\><C-n>
 
 "===========
@@ -207,7 +207,7 @@ let g:mkdp_page_title = '「${name}」'
 "C0C
 "=================
 "=================
-let g:coc_global_extensions = ['coc-python','coc-xml','coc-explorer','coc-java','coc-snippets','coc-translator','coc-tsserver','coc-json','coc-pairs','coc-highlight','coc-emmet','coc-html','coc-css','coc-python','coc-clangd','coc-vimlsp']
+let g:coc_global_extensions = ['coc-python','coc-xml','coc-explorer','coc-java','coc-snippets','coc-translator','coc-tsserver','coc-json','coc-pairs','coc-emmet','coc-html','coc-css','coc-python','coc-clangd','coc-vimlsp']
 " TextEdit might fail if hidden is not set.
 set hidden
 

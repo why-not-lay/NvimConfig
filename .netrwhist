@@ -1,3 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =1
+let g:netrw_dirhistcnt =5
+let g:netrw_dirhist_5='/home/losor/download/计网课设/12-03/webshow'
+let g:netrw_dirhist_4='/home/losor/JavaSoft/apache-tomcat-9.0.39/web1'
+let g:netrw_dirhist_3='/home/losor/code/java/web/web-app/.git'
+let g:netrw_dirhist_2='/home/losor/code/python/data_analysis/tengxun'
 let g:netrw_dirhist_1='/home/losor/.trash/http.md'

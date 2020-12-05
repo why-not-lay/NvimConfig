@@ -1,6 +1,5 @@
 {
   "python.jediEnabled":false,
-  "coc.preferences.colorSupport": true,
   "coc.preferences.extensionUpdateCheck":"weekly",
   "suggest.noselect": true,
   "suggest.enablePreselect": false,
@@ -14,5 +13,6 @@
     "html",
     "handlebars",
     "htmldjango"
-  ]
+  ],
+  "xml.java.home": "/home/losor/jvm/jdk-12.0.2/"
 }
