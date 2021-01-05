@@ -68,7 +68,7 @@ map tl :+tabnext<CR>
 map tj :-tabnext<CR>
 
 "控制台
-map <M-t> <M-k>:te<CR>
+map <M-t> <M-l>:te<CR>
 tnoremap <Esc> <C-\><C-n>
 
 "===========
@@ -84,6 +84,7 @@ Plug 'connorholyday/vim-snazzy'
 "Plug 'scrooloose/nerdtree'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() },'for':'markdown' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'dhruvasagar/vim-table-mode', {'for':'markdown'}
@@ -385,8 +386,55 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 "coc-explorer
 "===========
 "===========
-nmap tt : CocCommand explorer --preset normal<CR>
+nmap <space>e :CocCommand explorer<CR>
+let g:coc_explorer_global_presets = {
+\   '.vim': {
+\     'root-uri': '~/.vim',
+\   },
+\   'cocConfig': {
+\      'root-uri': '~/.config/coc',
+\   },
+\   'tab': {
+\     'position': 'tab',
+\     'quit-on-open': v:true,
+\   },
+\   'floating': {
+\     'position': 'floating',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingTop': {
+\     'position': 'floating',
+\     'floating-position': 'center-top',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingLeftside': {
+\     'position': 'floating',
+\     'floating-position': 'left-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingRightside': {
+\     'position': 'floating',
+\     'floating-position': 'right-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'simplify': {
+\     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+\   },
+\   'buffer': {
+\     'sources': [{'name': 'buffer', 'expand': v:true}]
+\   },
+\ }
 
+" Use preset argument to open it
+nmap <space>ed :CocCommand explorer --preset .vim<CR>
+nmap <space>ef :CocCommand explorer --preset floating<CR>
+nmap <space>ec :CocCommand explorer --preset cocConfig<CR>
+nmap <space>eb :CocCommand explorer --preset buffer<CR>
+
+" List all presets
+nmap <space>el :CocList explPresets
 
 
 
@@ -577,3 +625,31 @@ let g:formatters_cpp = ['clangformat_google']
 "java
 let g:formatdef_astyleformat_java ='"astyle --style=java"'
 let g:formatters_java = ['astyleformat_java']
+
+"===========
+"===========
+"auto fcitx
+"===========
+"===========
+let g:input_toggle = 1
+function! Fcitx2en()
+   let s:input_status = system("fcitx-remote")
+   if s:input_status == 2
+      let g:input_toggle = 1
+      let l:a = system("fcitx-remote -c")
+   endif
+endfunction
+
+function! Fcitx2zh()
+   let s:input_status = system("fcitx-remote")
+   if s:input_status != 2 && g:input_toggle == 1
+      let l:a = system("fcitx-remote -o")
+      let g:input_toggle = 0
+   endif
+endfunction
+
+set ttimeoutlen=150
+"退出插入模式
+autocmd InsertLeave * call Fcitx2en()
+"进入插入模式
+autocmd InsertEnter * call Fcitx2zh()
