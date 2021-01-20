@@ -4,20 +4,19 @@ let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3.7'
 
 "导入常规配置文件
-source ./setting.vim
+source ~/.config/nvim/setting.vim
 
 "导入键位文件
-source ./key_mapping.vim
+source ~/.config/nvim//key_mapping.vim
 
 "导入自定函数文件
-source ./function.vim
+source ~/.config/nvim//function.vim
 
 "===========
 "===========
 "vim-plug
 "===========
 "===========
-
 call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -30,24 +29,20 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'dhruvasagar/vim-table-mode', {'for':'markdown'}
 Plug 'mzlogin/vim-markdown-toc', {'for':'markdown'}
-Plug 'majutsushi/tagbar',{'on':'TagbarToggle'}
+"Plug 'majutsushi/tagbar',{'on':'TagbarToggle'}
 Plug 'junegunn/vim-peekaboo'
 Plug 'Chiel92/vim-autoformat'
+Plug 'liuchengxu/vista.vim'
+Plug 'tpope/vim-surround'
+Plug 'gcmt/wildfire.vim'
 call plug#end()
-
-"===========
-"===========
-"vim-airline
-"===========
-"===========
-
 
 "============
 "Snazzy
 "============
 "============
-let g:SnazzyTransparent=1
-color snazzy
+"let g:SnazzyTransparent=1
+colorscheme snazzy
 
 
 "============
@@ -164,7 +159,7 @@ set nobackup
 set nowritebackup
 
 " Give more space for displaying messages.
-set cmdheight=2
+set cmdheight=1
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -448,9 +443,9 @@ inoreabbrev <expr> __
 "tarbar
 "===========
 "===========
-nmap tb :TagbarToggle<CR>
-let g:tagbar_map_showproto = '<C-h>'
-let g:tagbar_map_togglecaseinsensitive = 'S'
+"nmap tb :TagbarToggle<CR>
+"let g:tagbar_map_showproto = '<C-h>'
+"let g:tagbar_map_togglecaseinsensitive = 'S'
 
 
 "===========
@@ -478,4 +473,75 @@ let g:formatters_cpp = ['clangformat_google']
 "java
 let g:formatdef_astyleformat_java ='"astyle --style=java"'
 let g:formatters_java = ['astyleformat_java']
+
+"===========
+"===========
+"vim.vista
+"===========
+"===========
+
+noremap <Leader>v :Vista!!<CR>
+
+" How each level is indented and what to prepend.
+" This could make the display more compact or more spacious.
+" e.g., more compact: ["▸ ", ""]
+" Note: this option only works the LSP executives, doesn't work for `:Vista ctags`.
+"let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_icon_indent =["▸ ", ""]
+
+" Executive used when opening vista sidebar without specifying it.
+" See all the avaliable executives via `:echo g:vista#executives`.
+let g:vista_default_executive = 'coc'
+
+" Set the executive for some filetypes explicitly. Use the explicit executive
+" instead of the default one for these filetypes when using `:Vista` without
+" specifying the executive.
+"let g:vista_executive_for = {
+"  \ 'cpp': 'vim_lsp',
+"  \ 'php': 'vim_lsp',
+"  \ }
+
+" Declare the command including the executable and options used to generate ctags output
+" for some certain filetypes.The file path will be appened to your custom command.
+" For example:
+"let g:vista_ctags_cmd = {
+"      \ 'haskell': 'hasktags -x -o - -c',
+"      \ }
+
+" To enable fzf's preview window set g:vista_fzf_preview.
+" The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
+" For example:
+let g:vista_fzf_preview = ['right:50%']
+
+" Ensure you have installed some decent font to show these pretty symbols, then you can enable icon for the kind.
+let g:vista#renderer#enable_icon = 0
+
+" The default icons can't be suitable for all the filetypes, you can extend it as you wish.
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
+
+"===========
+"===========
+"wildfire.vim
+"===========
+"===========
+"By default, Wildfire selects any of the text objects i', i", i), i], i}, ip and it. You can decide the ones to consider with the following option:
+"let g:wildfire_objects = ["i'", 'i"', "i)", "i]", "i}", "ip", "it"]
+
+map <CR> <Plug>(wildfire-fuel)
+let g:wildfire_objects = {
+    \ "*" : ["i'", 'i"', "i)", "i]", "i}","i>"]
+\ }
+
+cal wildfire#triggers#Add("<SPACE>", {
+    \ "html,xml" : ["at", "it"],
+\ })
+
+nmap <leader>s <Plug>(wildfire-quick-select)
+cal wildfire#triggers#AddQs("<leader>s", {
+    \ "*" : ["i)", "i]", "i}"],
+\ })
+
 
