@@ -3,73 +3,14 @@ let g:python_host_prog='/usr/bin/python2'
 "let g:python3_host_prog='/usr/bin/python3'
 let g:python3_host_prog='/usr/bin/python3.7'
 
-"常规配置
-let mapleader=" "
-set number
-set cursorline
-set showcmd
-set relativenumber
+"导入常规配置文件
+source ./setting.vim
 
-set hlsearch
-exec "nohlsearch"
+"导入键位文件
+source ./key_mapping.vim
 
-set incsearch
-set ignorecase
-set smartcase
-set expandtab
-
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set wildmenu
-
-set list
-set backspace=indent,eol,start
-set scrolloff=25
-
-set foldmethod=indent
-
-noremap j h
-noremap k j
-noremap i k
-noremap h i
-noremap H I
-noremap I 5k
-noremap K 5j
-noremap = n
-noremap - N
-noremap 0 ^
-noremap ^ 0
-noremap G G
-noremap <C-o> <C-o>
-
-map s <nop>
-map S :w<CR>
-map Q :q<CR>
-map R :source ~/.config/nvim/init.vim<CR>
-"分屏
-map <M-i> :set nosplitbelow<CR>:split<CR>
-map <M-k> :set splitbelow<CR>:split<CR>
-map <M-l> :set splitright<CR>:vsplit<CR>
-map <M-j> :set nosplitright<CR>:vsplit<CR>
-map sv <C-w>t<C-w>H
-map sh <C-w>t<C-w>K
-map <LEADER>i <C-w>k
-map <LEADER>k <C-w>j
-map <LEADER>j <C-w>h
-map <LEADER>l <C-w>l
-map <down> :res +5<CR>
-map <up> :res -5<CR>
-map <right> :vertical resize-5<CR>
-map <left> :vertical resize+5<CR>
-"标签页
-map t0 :tabe<CR>
-map tl :+tabnext<CR>
-map tj :-tabnext<CR>
-
-"控制台
-map <M-t> <M-l>:te<CR>
-tnoremap <Esc> <C-\><C-n>
+"导入自定函数文件
+source ./function.vim
 
 "===========
 "===========
@@ -107,15 +48,6 @@ call plug#end()
 "============
 let g:SnazzyTransparent=1
 color snazzy
-
-"============
-"nerdtree
-"x
-"============
-"============
-"map tt :NERDTreeToggle<CR>
-"map fc :NERDTreeClose<CR>
-"let NERDTreeMapOpenSplit = "S"
 
 
 "============
@@ -208,20 +140,47 @@ let g:mkdp_page_title = '「${name}」'
 "C0C
 "=================
 "=================
-let g:coc_global_extensions = ['coc-python','coc-xml','coc-explorer','coc-java','coc-snippets','coc-translator','coc-tsserver','coc-json','coc-pairs','coc-emmet','coc-html','coc-css','coc-python','coc-clangd','coc-vimlsp']
+let g:coc_global_extensions = [
+      \ 'coc-xml',
+      \ 'coc-explorer',
+      \ 'coc-java',
+      \ 'coc-snippets',
+      \ 'coc-translator',
+      \ 'coc-tsserver',
+      \ 'coc-json',
+      \ 'coc-pairs',
+      \ 'coc-emmet',
+      \ 'coc-html',
+      \ 'coc-css',
+      \ 'coc-python',
+      \ 'coc-clangd',
+      \ 'coc-vimlsp'
+      \ ]
 " TextEdit might fail if hidden is not set.
 set hidden
 
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
+
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
-set updatetime=100
+set updatetime=300
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
-set signcolumn=yes
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
 "补全切换TAB
 " Use tab for trigger completion with characters ahead and navigate.
@@ -239,18 +198,14 @@ function! s:check_back_space() abort
 endfunction
 
 "打开补全
-" Use <c-space> to trigger completion.
+" Use <c-x> to trigger completion.
 inoremap <silent><expr> <c-x> coc#refresh()
 
 "确认补全项
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 "跳转可利用<C-o>返回
 
@@ -271,14 +226,17 @@ nmap <silent> gr <Plug>(coc-references)
 
 
 " 显示文档
-" Use K to show documentation in preview window.
+" Use Ctrl-k to show documentation in preview window.
 nnoremap <silent> <c-k> :call <SID>show_documentation()<CR>
+
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
   else
-    call CocAction('doHover')
+    execute '!' . &keywordprg . " " . expand('<cword>')
   endif
 endfunction
 
@@ -313,18 +271,32 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Introduce function text object
+" Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
 xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
 omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
-" Use <TAB> for selections ranges.
-" NOTE: Requires 'textDocument/selectionRange' support from the language server.
-" coc-tsserver, coc-python are the examples of servers that support it.
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -360,6 +332,7 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " coc-highlight
 autocmd CursorHold * silent call CocActionAsync('highlight')
 set termguicolors
+
 
 " coc-translator
 nnoremap , :CocCommand translator.popup<CR>
@@ -434,8 +407,7 @@ nmap <space>ec :CocCommand explorer --preset cocConfig<CR>
 nmap <space>eb :CocCommand explorer --preset buffer<CR>
 
 " List all presets
-nmap <space>el :CocList explPresets
-
+nmap <space>el :CocList explPresets<CR>
 
 
 "===========
@@ -483,125 +455,6 @@ let g:tagbar_map_togglecaseinsensitive = 'S'
 
 "===========
 "===========
-"一键编译并运行
-"===========
-"===========
-
-"下一个错误
-nmap <leader>cn :cn<CR>
-"上一个错误
-nmap <leader>cp :cp<CR>
-"错误列表
-nmap <leader>cw :cw<CR>
-
-"编译并运行
-noremap <F5> :call Compile()<CR>
-function! Compile()
-  normal S
-  "C++
-  if &filetype == 'cpp'
-    execute "make"
-    let s:error_list_len = len(getqflist())
-    if s:error_list_len == 0
-      normal zk
-      execute "te! time ./test"
-    else
-      execute "cw"
-    endif
-  "python3
-  elseif &filetype == 'python'
-    normal zk
-    execute "te! python3.7 %"
-  "markdown
-  elseif &filetype == 'markdown'
-    execute "MarkdownPreview"
-  "java
-  elseif &filetype == 'java'
-    execute "make"
-    let s:error_list_len = len(getqflist())
-    if s:error_list_len == 0
-      "主类名为Run.class
-      normal zk
-      execute "te! make run"
-    else
-      execute "cw"
-    endif
-  endif
-endfunction
-
-"===========
-"===========
-"gdb调试(C++)
-"===========
-"===========
-noremap <F9> :call GdbDebug()<CR>
-function! GdbDebug()
-  normal S
-  "C++
-  if &filetype == 'cpp'
-    execute "make gdb"
-    let s:error_gdb_len = len(getqflist())
-    if s:error_gdb_len == 0
-      normal t0
-      execute "te! gdb -q -tui ./gdbtest"
-    else
-      execute "cw"
-    endif
-  endif
-
-endfunction
-
-"===========
-"===========
-"一键注释
-"===========
-"===========
-"<C-_>为<C-/>
-noremap <C-_> :call Notes()<CR>
-function! Notes()
-  if &filetype == 'cpp'
-    normal ^h//
-  elseif &filetype == 'java'
-    normal ^h//
-  elseif &filetype == 'python'
-    normal ^h#
-  elseif &filetype == 'vim'
-    normal ^h"
-  endif
-endfunction
-
-
-"===========
-"===========
-"一键反注释
-"===========
-"===========
-noremap <C-\> :call NotNotes()<CR>
-function! NotNotes() 
-  normal 0
-  let s:cur_start = expand("<cWORD>")
-  if &filetype == 'cpp'
-    if s:cur_start =~ "//"
-      normal 0dldl
-    endif
-  elseif &filetype == 'java'
-    if s:cur_start =~ "//"
-      normal 0dldl
-    endif
-  elseif &filetype == 'python'
-    if s:cur_start =~ "#"
-      normal 0dl
-    endif
-  elseif &filetype == 'vim'
-    if s:cur_start =~ """
-      normal 0dl
-    endif
-  endif
-endfunction
-
-
-"===========
-"===========
 "vim-autoformat
 "===========
 "===========
@@ -626,30 +479,3 @@ let g:formatters_cpp = ['clangformat_google']
 let g:formatdef_astyleformat_java ='"astyle --style=java"'
 let g:formatters_java = ['astyleformat_java']
 
-"===========
-"===========
-"auto fcitx
-"===========
-"===========
-let g:input_toggle = 1
-function! Fcitx2en()
-   let s:input_status = system("fcitx-remote")
-   if s:input_status == 2
-      let g:input_toggle = 1
-      let l:a = system("fcitx-remote -c")
-   endif
-endfunction
-
-function! Fcitx2zh()
-   let s:input_status = system("fcitx-remote")
-   if s:input_status != 2 && g:input_toggle == 1
-      let l:a = system("fcitx-remote -o")
-      let g:input_toggle = 0
-   endif
-endfunction
-
-set ttimeoutlen=150
-"退出插入模式
-autocmd InsertLeave * call Fcitx2en()
-"进入插入模式
-autocmd InsertEnter * call Fcitx2zh()
