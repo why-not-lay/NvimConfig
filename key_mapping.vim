@@ -18,9 +18,9 @@ map <M-l> :set splitright<CR>:vsplit<CR>
 map <M-h> :set nosplitright<CR>:vsplit<CR>
 map sv <C-w>t<C-w>H
 map sh <C-w>t<C-w>K
-map <LEADER>i <C-w>k
-map <LEADER>k <C-w>j
-map <LEADER>j <C-w>h
+map <LEADER>k <C-w>k
+map <LEADER>j <C-w>j
+map <LEADER>h <C-w>h
 map <LEADER>l <C-w>l
 map <down> :res +5<CR>
 map <up> :res -5<CR>
@@ -29,7 +29,7 @@ map <left> :vertical resize+5<CR>
 "标签页
 map t0 :tabe<CR>
 map tl :+tabnext<CR>
-map tj :-tabnext<CR>
+map th :-tabnext<CR>
 
 "控制台
 map <M-t> <M-l>:te<CR>
