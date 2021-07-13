@@ -8,12 +8,25 @@
     "UltiSnips",
     "$HOME/.config/nvim/UltiSnips/"
   ],
-  "java.trace.server": "verbose",
   "html.filetypes": [
     "html",
     "handlebars",
     "htmldjango"
   ],
+  "snippets.autoTrigger": false,
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-1.8",
+      "path": "/home/losor/jvm/jdk1.8.0_291"
+    },
+    {
+      "name": "JavaSE-12",
+      "path": "/home/losor/jvm/jdk-12.0.2",
+      "default": true
+    }
+  ],
+  "java.trace.server": "verbose",
+  "java.home": "/home/losor/jvm/jdk-12.0.2",
   "xml.java.home": "/home/losor/jvm/jdk-12.0.2/",
   "explorer.keyMappings.global": {
       "i": false, 

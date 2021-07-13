@@ -545,3 +545,10 @@ cal wildfire#triggers#AddQs("<leader>s", {
 \ })
 
 
+"===========
+"===========
+"fzf
+"===========
+"===========
+map ss :FZF<CR>
+

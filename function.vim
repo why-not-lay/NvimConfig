@@ -26,11 +26,13 @@ function! Compile()
     endif
   "python3
   elseif &filetype == 'python'
-    normal zk
+    "normal 
     execute "te! python3.7 %"
   "markdown
   elseif &filetype == 'markdown'
     execute "MarkdownPreview"
+  elseif &filetype == 'html'
+    execute "!google-chrome % &"
   "java
   elseif &filetype == 'java'
     execute "make"

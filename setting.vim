@@ -1,7 +1,7 @@
 "常规配置
 let mapleader=" "
 set number
-set cursorline
+"set cursorline
 set showcmd
 set relativenumber
 

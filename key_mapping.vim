@@ -32,5 +32,8 @@ map tl :+tabnext<CR>
 map th :-tabnext<CR>
 
 "控制台
-map <M-t> <M-l>:te<CR>
+map <M-t>l <M-l>:te<CR>
+map <M-t>h <M-h>:te<CR>
+map <M-t>j <M-j>:te<CR>
+map <M-t>k <M-k>:te<CR>
 tnoremap <Esc> <C-\><C-n>
